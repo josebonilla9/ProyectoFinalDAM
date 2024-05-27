@@ -1,5 +1,6 @@
 package proyectofinaldam.gui;
 
+import java.awt.Color;
 import java.time.LocalTime;
 import java.util.Date;
 import javax.swing.JTable;
@@ -77,6 +78,7 @@ public class GraphicInterface extends javax.swing.JFrame {
         );
 
         jFrameTabla.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        jFrameTabla.setBackground(new java.awt.Color(255, 255, 255));
 
         jTableCitas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -96,6 +98,7 @@ public class GraphicInterface extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTableCitas);
         jTableCitas.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
+        jLabelTus.setBackground(new java.awt.Color(255, 255, 255));
         jLabelTus.setFont(new java.awt.Font("Roboto", 0, 24)); // NOI18N
         jLabelTus.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelTus.setText("Tus citas:");
@@ -110,6 +113,9 @@ public class GraphicInterface extends javax.swing.JFrame {
 
         jFormattedFechaTabla.setEditable(false);
         jFormattedFechaTabla.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("d MMMM y"))));
+        jFormattedFechaTabla.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jFormattedFechaTabla.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jFormattedFechaTabla.setEnabled(false);
 
         javax.swing.GroupLayout jFrameTablaLayout = new javax.swing.GroupLayout(jFrameTabla.getContentPane());
         jFrameTabla.getContentPane().setLayout(jFrameTablaLayout);
@@ -124,7 +130,7 @@ public class GraphicInterface extends javax.swing.JFrame {
                 .addGap(130, 130, 130))
             .addGroup(jFrameTablaLayout.createSequentialGroup()
                 .addGap(36, 36, 36)
-                .addComponent(jFormattedFechaTabla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jFormattedFechaTabla, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jFrameTablaLayout.setVerticalGroup(
@@ -142,6 +148,8 @@ public class GraphicInterface extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
+
+        jFrameTabla.setBackground(Color.WHITE);
 
         jLabel1.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel1.setText("Hora:");
@@ -237,10 +245,16 @@ public class GraphicInterface extends javax.swing.JFrame {
         setTitle("Agenda Digital");
         setName("framePrincipal"); // NOI18N
 
+        jPanelMain.setBackground(new java.awt.Color(255, 255, 255));
+        jPanelMain.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jPanelMain.setFocusTraversalKeysEnabled(false);
         jPanelMain.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jDateSeleccion.setForeground(new java.awt.Color(255, 255, 255));
         jDateSeleccion.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jPanelMain.add(jDateSeleccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 190, 400, 30));
+        Date fechaActual = new Date();
+        jDateSeleccion.setDate(fechaActual);
 
         jLabelFecha.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabelFecha.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -303,7 +317,7 @@ public class GraphicInterface extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonTareasActionPerformed
 
-    public JTable getJTableCitas() {
+    public JTable getJTable() {
         return jTableCitas;
     }
     
@@ -311,10 +325,11 @@ public class GraphicInterface extends javax.swing.JFrame {
         return jDateSeleccion.getDate();
     }
     
+    
     private void jButtonCitasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCitasMouseClicked
         if (jDateSeleccion.getDate() != null) {
                 
-        JTable jTableCitas = db.VerCitas(this);
+        JTable tabla = db.VerEventos(this, "citas");
         
         jFormattedFechaTabla.setValue(jDateSeleccion.getDate());
         
@@ -333,13 +348,13 @@ public class GraphicInterface extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCitasMouseClicked
 
     private void jButtonCitasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCitasActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_jButtonCitasActionPerformed
 
     private void jButtonTareasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonTareasMouseClicked
         if (jDateSeleccion.getDate() != null) {
                 
-        JTable jTableCitas = db.VerTareas(this);
+        JTable tabla = db.VerEventos(this, "tareas");
         
         jFormattedFechaTabla.setValue(jDateSeleccion.getDate());
         
@@ -372,17 +387,13 @@ public class GraphicInterface extends javax.swing.JFrame {
         LocalTime hora = LocalTime.parse(jFormattedTextFieldHora.getText());
         
         if (jLabelTus.getText().equals("Tus citas:")) {
-            db.InsertarCitas(0, jDateSeleccion.getDate(), hora, jTextAreaEvento.getText(), jTextAreaNotas.getText());
-            db.VerCitas(this);
+            db.InsertarEventos(0, jDateSeleccion.getDate(), hora, jTextAreaEvento.getText(), jTextAreaNotas.getText(), "citas");
+            db.VerEventos(this, "citas");
         }
         else {
-            db.InsertarTareas(0, jDateSeleccion.getDate(), hora, jTextAreaEvento.getText(), jTextAreaNotas.getText());
-            db.VerTareas(this);
+            db.InsertarEventos(0, jDateSeleccion.getDate(), hora, jTextAreaEvento.getText(), jTextAreaNotas.getText(), "tareas");
+            db.VerEventos(this, "tareas");
         }
-                
-        
-        
-        
         
         jFormattedTextFieldHora.setText("00:00");
         jTextAreaEvento.setText("");
@@ -390,9 +401,9 @@ public class GraphicInterface extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonAddFinalMouseClicked
 
     private void jButtonAddFinalMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAddFinalMouseReleased
-
     }//GEN-LAST:event_jButtonAddFinalMouseReleased
 
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAdd;
     private javax.swing.JButton jButtonAddFinal;
