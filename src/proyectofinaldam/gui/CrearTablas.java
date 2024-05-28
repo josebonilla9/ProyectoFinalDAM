@@ -13,13 +13,13 @@ public class CrearTablas {
     
     DataBase db;
     
-    public void CrearTablas() {
+    public void conectarTablas() {
         db = new DataBase();
         db.conectar("tfgdam");
     }
     
     public JTable crearTabla(GraphicInterface gui, String citaTarea) {
-        CrearTablas();
+        conectarTablas();
         
         //Creación de la tabla
         JTable tablaNueva = gui.getJTable();
@@ -62,36 +62,31 @@ public class CrearTablas {
             public void mouseClicked(MouseEvent e) {
                 
                 //Obtienen la columna y fila en la que se hizo click
-                int row = tablaNueva.rowAtPoint(e.getPoint());
-                int column = tablaNueva.columnAtPoint(e.getPoint());
+                int fila = tablaNueva.rowAtPoint(e.getPoint());
+                int columna = tablaNueva.columnAtPoint(e.getPoint());
 
-                if (column == 0) {
-                    
-                    
-                    
+                if (columna == 0) {
                     DefaultTableModel model = (DefaultTableModel) tablaNueva.getModel();
-                    String currentState = (String) model.getValueAt(row, column);
-                    int idTabla = (int) model.getValueAt(row, column + 5);
+                    String currentState = (String) model.getValueAt(fila, columna);
+                    int idTabla = (int) model.getValueAt(fila, 5);
                     
                     db.cambiarEstado(idTabla, citaTarea);
                     
                     //Según el símbolo que tenga si se pulsa se cambia por el otro, lo que hace que en la base de datos también cambie
                     if (currentState.equals("\u2713")) {
-                        model.setValueAt("\u2717", row, column);
-
+                        model.setValueAt("\u2717", fila, columna);
                     } else {
-                        model.setValueAt("\u2713", row, column);
+                        model.setValueAt("\u2713", fila, columna);
                     }
-                }
-                else if (column == 4) {
+                } else if (columna == 4) {
                     DefaultTableModel model = (DefaultTableModel) tablaNueva.getModel();
-                    int idTabla = (int) model.getValueAt(row, 5);
+                    int idTabla = (int) model.getValueAt(fila, 5);
                     
                     int confirmar = JOptionPane.showConfirmDialog(null, "¿Estás seguro de que deseas eliminar esta cita?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
                         if (confirmar == JOptionPane.YES_OPTION) {
                             if (citaTarea.equals("citas")){
                                 db.eliminarCitas(gui, idTabla);
-                            }else if (citaTarea.equals("tareas")){
+                            } else if (citaTarea.equals("tareas")){
                                 db.eliminarTareas(gui, idTabla);
                             }                            
                         }

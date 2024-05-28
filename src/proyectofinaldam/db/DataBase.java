@@ -78,7 +78,7 @@ public class DataBase {
         ResultSet resultado = null;
         
         try {
-            String query = "SELECT Estado, Hora, Evento, Notas, id FROM " + citaTarea + " WHERE Fecha = '" + fechaSQL + "' ";
+            String query = "SELECT * FROM " + citaTarea + " WHERE Fecha = '" + fechaSQL + "' ";
             PreparedStatement instruccion = conexion.prepareStatement(query);
             resultado = instruccion.executeQuery();
             
@@ -92,8 +92,8 @@ public class DataBase {
     
     //Método para ver las citas o tareas en una tabla
     public JTable VerEventos(GraphicInterface gui, String citaTarea) {
-        JTable tablaCitas = new CrearTablas().crearTabla(gui, citaTarea);
-        DefaultTableModel tabla = (DefaultTableModel) tablaCitas.getModel();
+        JTable tablaFinal = new CrearTablas().crearTabla(gui, citaTarea);
+        DefaultTableModel tabla = (DefaultTableModel) tablaFinal.getModel();
         
         Date fechaElegida = gui.getDate();
         fechaSQL = new java.sql.Date(fechaElegida.getTime());
@@ -135,7 +135,7 @@ public class DataBase {
             System.err.println(e);
         }
         
-        return tablaCitas;
+        return tablaFinal;
     }
     
     public void cambiarEstado(int idTabla, String citaTarea) {
