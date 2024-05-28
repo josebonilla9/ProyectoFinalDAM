@@ -387,11 +387,11 @@ public class GraphicInterface extends javax.swing.JFrame {
         LocalTime hora = LocalTime.parse(jFormattedTextFieldHora.getText());
         
         if (jLabelTus.getText().equals("Tus citas:")) {
-            db.InsertarEventos(0, jDateSeleccion.getDate(), hora, jTextAreaEvento.getText(), jTextAreaNotas.getText(), "citas");
+            db.insertarEventos(0, jDateSeleccion.getDate(), hora, jTextAreaEvento.getText(), jTextAreaNotas.getText(), "citas");
             db.VerEventos(this, "citas");
         }
         else {
-            db.InsertarEventos(0, jDateSeleccion.getDate(), hora, jTextAreaEvento.getText(), jTextAreaNotas.getText(), "tareas");
+            db.insertarEventos(0, jDateSeleccion.getDate(), hora, jTextAreaEvento.getText(), jTextAreaNotas.getText(), "tareas");
             db.VerEventos(this, "tareas");
         }
         

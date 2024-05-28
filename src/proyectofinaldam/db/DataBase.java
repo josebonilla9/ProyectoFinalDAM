@@ -40,7 +40,7 @@ public class DataBase {
     }
     
     //Método para insertar citas y tareas nuevas en la base de datos
-    public void InsertarEventos(int estado, Date fecha, LocalTime hora, String evento, String notas, String citaTarea) {
+    public void insertarEventos(int estado, Date fecha, LocalTime hora, String evento, String notas, String citaTarea) {
         fecha = fechaSQL;
         
         try {
@@ -74,7 +74,7 @@ public class DataBase {
         }
     }
     
-    public ResultSet BuscarEventos(String citaTarea) {
+    public ResultSet buscarEventos(String citaTarea) {
         ResultSet resultado = null;
         
         try {
@@ -102,8 +102,8 @@ public class DataBase {
         
         //Se busca en la base de datos la diferente información que mostrar en la tabla con SELECT
         try {
-            BuscarEventos(citaTarea);
-            ResultSet resultado = BuscarEventos(citaTarea);
+            buscarEventos(citaTarea);
+            ResultSet resultado = buscarEventos(citaTarea);
             
             //En la base de datos el estado está añadido con 1 si está finalizado el evento y 0 si no lo está
             //por lo que aquí si tiene un 1 ponemos un tick y si la base de datos tiene un 0 ponemos una cruz
